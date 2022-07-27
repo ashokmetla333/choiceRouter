@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="31ffa6e7-9085-4f5e-a5ab-e848e8085887" >
+		<http:listener-connection host="0.0.0.0" port="8083" />
+	</http:listener-config>
+	<flow name="choicerouter-2Flow" doc:id="e702f5c7-ff2c-48ee-a032-5020bfa32d57" >
+		<http:listener doc:name="Listener" doc:id="77b65218-c2bd-45fa-9f3d-d7652867aa8d" config-ref="HTTP_Listener_config" path="/Info" allowedMethods="GET"/>
+		<choice doc:name="" doc:id="fe8bd13e-38bd-4788-a060-01932bb63985" >
+			<when expression='#[attributes.queryParams.state == "Telangana"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="84c5d021-2fa6-476b-8c6b-326d2bd70783" message='#["The #[attributes.queryParams.state] Capital is Hyderabad"]'/>
+			</when>
+			<when expression='#[attributes.queryParams.state == "Karnataka"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="aed65301-e1ef-43b5-af9b-21cdc78180df" message='#["The Capital is Banglore"]'/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="d40eebe3-1fda-4c59-850e-013b03ea1799" message='#["No State Information is found"]'/>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
